@@ -24,26 +24,42 @@ function createCourseObjects(courseArray) {
 
 // Generate the course objects for core classes
 
-const electives500 = [
-    ['CS', '501', false, true, 3],
-    ['CS', '515', true, true, 3],
-    ['CS', '520', true, true, 3],
-    ['CS', '528', true, false, 3],
-    ['CS', '532', true, true, 3],
-    ['CS', '535', true, true, 3],
-    ['CS', '546', true, true, 3],
-    ['CS', '550', true, true, 3],
-    ['CS', '560', true, true, 3],
-    ['CS', '561', true, true, 3],
-    ['CS', '564', true, true, 3],
-    ['CS', '565', true, true, 3],
-    ['CS', '574', true, true, 3],
-    ['CS', '589', true, true, 3],
-    ['CS', '590AB', true, true, 3],
-    ['CS', '590AE', true, true, 3],
-    ['CS', '590X', true, true, 3]
-  ];
-
-const coreCourseObjects = createCourseObjects(electives500);
+const upper_levels = [
+    ['MATH','405',true,true,3],
+    ['MATH','411',true,true,3],
+    ['MATH','412',true,true,3],
+    ['MATH','421',true,true,3],
+    ['MATH','437',true,true,3],
+    ['MATH', '455',true,true,3],
+    ['MATH', '456',true,true,3],
+    ['MATH','461',true,true,3],
+    ['MATH','471',true,true,3],
+    ['MATH','475',true,true,3],
+    ['MATH','481',true,true,3],
+    ['MATH','522',true,true,3],
+    ['MATH','523H',true,true,3],
+    ['MATH','524',true,true,3],
+    ['MATH','532H',true,true,3],
+    ['MATH','534H',true,true,3],
+    ['MATH','536',true,true,3],
+    ['MATH','537',true,true,3],
+    ['MATH','545',true,true,3],
+    ['MATH','548',true,true,3],
+    ['MATH','551',true,true,3],
+    ['MATH','552',true,true,3],
+    ['MATH','557',true,true,3],
+    ['MATH','563H',true,true,3],
+    ['MATH','571',true,true,3],
+    ['MATH','590STA',true,true,3],
+    ['STAT', '315',true,true,3],
+    ['STAT','501',true,true,3],
+    ['STAT','516',true,true,3],
+    ['STAT','525',true,true,3],
+    ['STAT','526',true,true,3],
+    ['STAT', '530',true,true,3],
+    ['STAT','535',true,true,3],
+    ['STAT','590T',true,true,3]
+]
+const coreCourseObjects = createCourseObjects(upper_levels);
 
 console.log(coreCourseObjects);
