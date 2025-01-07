@@ -1,4 +1,5 @@
-const { csReqs, csPaths } = require('./Database/Courses Javascript/CS Major/Requirements.js')
+const csPaths = require('./Database/Courses Javascript/CS Major/Requirements.js')
+const csCourses = require('./Database/Courses Javascript/CS Major/courses.js')
 // csPaths = require('./Database/Courses Javascript/CS Major/Requirements.js')
 //plan:
 
@@ -9,47 +10,59 @@ const { csReqs, csPaths } = require('./Database/Courses Javascript/CS Major/Requ
 //finally, solve using a greedy algorithm. Priotize taking courses than can be taken asap, meaning a smaller prereq trree level.the ne
 // function findMinimalCourses(programs, prerequisiteSets = [], userCourses = []) {
 
-function findMinimalCourses(programs) {
-    const requirementMap = {};  // Maps requirements to their courses
-    const courseToReqs = {};    // Maps courses to the requirements they satisfy
+function findMinimalCourses(programs, allCourses) {
+    const requirementMap = new Map();  // Maps requirements to their courses
+    const courseToReqs = new Map();    // Maps courses to the requirements they satisfy
     const allRequirements = []; // List of all requirements (for bitmasking)
-    const prereqs = {};         // Tracks prerequisites for user-specified courses
 
     // Step 1: Flatten all requirements and track the programs and courses satisfying them
     programs.forEach(program => {
-        program.forEach(req => {
+        program.requirements.forEach(req => {
             const reqName = req.name;
-            console.log(reqName)
             if (!requirementMap[reqName]) {
-                // const reqDetails = program.allRequirements.find(r => r.requirementName === reqName);
-            // if (reqDetails) {
-                requirementMap[reqName] = {
-                    criteria: req.criteria,
-                    count: req.count,
-                    programs: [program.name]  // Track the program(s) this requirement belongs to
-                };
-                allRequirements.push(reqName); // Track all requirements for bitmasking
-                // }
+                const reqDetails = program.allRequirements.find(r => r.name === reqName);
+                if (reqDetails) {
+                    requirementMap.set(reqName,{
+                        criteria: reqDetails.criteria,
+                        count: req.numReq,
+                        logic: reqDetails.logicType,
+                        allowsOverlap: reqDetails.allowsOverlap,
+                        program: program.program  // Track the program(s) this requirement belongs to
+                    });
+                    allRequirements.push(reqName); // Track all requirements for bitmasking
+                    reqDetails.criteria.forEach((entry) => {
+                        if(entry.courses){
+                            entry.courses.forEach((course) => {
+                                const reqsSatisfied = courseToReqs.get(course) ? courseToReqs.get(course) : []
+                                if(!reqsSatisfied.includes(reqName)){
+                                    reqsSatisfied.push(reqName)
+                                }
+                                courseToReqs.set(course,reqsSatisfied)
+                            })
+                        }
+                        else if(entry.minLevel){
+                            
+                            const courses = getAllCourses(allCourses, entry.department, entry.minLevel)
+                            courses.forEach((course) => {
+                                const combinedName = course.level_suffix ? course.department + course.level + course.level_suffix : course.department + course.level 
+
+                                const reqsSatisfied = courseToReqs.get(combinedName) ? courseToReqs.get(combinedName) : []
+                                if(!reqsSatisfied.includes(reqName)){
+                                    reqsSatisfied.push(reqName)
+                                }
+                                courseToReqs.set(combinedName,reqsSatisfied)
+                            })
+                        }
+
+                    })
+                }
             } else {
                 requirementMap[reqName].programs.push(program.name);
             }
         });
     });
 
-    // Step 2: Map courses to requirements they satisfy
-    Object.keys(requirementMap).forEach(reqName => {
-        const reqData = requirementMap[reqName];
-        reqData.criteria.satisfiedBy.forEach(condition => {
-            if (condition.courses) {
-                condition.courses.forEach(course => {
-                    if (!courseToReqs[course]) courseToReqs[course] = [];
-                    reqData.programs.forEach(program => {
-                        courseToReqs[course].push({ reqName, program });
-                    });
-                });
-            }
-        });
-    });
+    return courseToReqs
 
 
 
@@ -129,14 +142,13 @@ function findMinimalCourses(programs) {
     return Array.from(selectedCourses);
 }
 
-function testMin(programs){
-    programs.forEach((program) => {
-        program.forEach((requirement) => {
-            console.log(`${requirement.requirement_name} is satisfied by:`)
-            console.log(requirement.criteria.satisfied_by)
-        })
+function getAllCourses(courses, department, minLevel){
+
+    return courses.filter((course) => {
+        return department === course.department && minLevel <= course.level
     })
 }
 
 //a = testMin([csReqs])
-a = findMinimalCourses([csReqs])
+a = findMinimalCourses([csPaths[0]], csCourses)
+console.log(a)

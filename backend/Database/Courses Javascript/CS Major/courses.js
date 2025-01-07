@@ -401,3 +401,5 @@ const courses = [
         availability: 'spring'
       }
   ]
+
+module.exports = courses

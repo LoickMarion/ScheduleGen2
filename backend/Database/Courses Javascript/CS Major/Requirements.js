@@ -65,6 +65,10 @@ const csReqs = [
             { courses: ['ECE547'] },
             { courses: ['ECE668'] }
         ]
+        /*
+        MATH411 => ['CS300++']
+        
+        */
         
     },
     {
@@ -93,7 +97,7 @@ const csReqs = [
     },
 
     {
-        name: 'CS200Level ',
+        name: 'CS200Level',
         logicType: 'Course-Based',
         allowsOverlap: false,
         criteria: [
@@ -104,7 +108,7 @@ const csReqs = [
         ] 
     },
     {
-        name: 'CSLabScience ',
+        name: 'CSLabScience',
         logicType: 'Course-Based',
         allowsOverlap: false,
         criteria: [
@@ -128,6 +132,7 @@ const csReqs = [
 csPaths = [
     {
         program: 'CS Primary Major',
+        allRequirements: csReqs,
         requirements: [           
             { name: 'CS Major Core Classes', numReq: 1 },
             { name: 'CS JYW', numReq: 1 },
@@ -139,6 +144,7 @@ csPaths = [
     },
     {
         program: 'CS Secondary Major',
+        allRequirements: csReqs,
         requirements: [            
             { name: 'CS Major Core Classes', numReq: 1 },
             { name: 'CS300+', numReq: 3 },
@@ -148,6 +154,7 @@ csPaths = [
     },
     {
         program: 'CS Minor',
+        allRequirements: csReqs,
         requirements: [            
             { name: 'CS Minor Core Classes', numReq: 1 },
             { name: 'CS200Level', numReq: 2 },
@@ -155,6 +162,7 @@ csPaths = [
     },
     {
         program: 'CS 4+1',
+        allRequirements: csReqs,
         requirements: [            
             { name: 'CS Major Core Classes', numReq: 1 },
             { name: 'CS JYW', numReq: 1 },
@@ -169,4 +177,4 @@ csPaths = [
     //add honors wwhen time
 ]
 
-module.exports = { csReqs, csPaths }
+module.exports = csPaths
