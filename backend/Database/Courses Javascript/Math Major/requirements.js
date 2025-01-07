@@ -1,174 +1,102 @@
 const mathReqs = [
     {
-        requirement_name: 'Math Core',
-        logic_type: 'Course-Based',
-        allows_overlap: false,
-        criteria: {
-            satisfied_by: [
-                { courses: ['CICS110', 'MATH131', 'MATH132', 'MATH233', 'MATH235'] } //AND within the brackets
-            ]
-        }
+        name: 'Math Core',
+        logicType: 'Course-Based',
+        allowsOverlap: false,
+        criteria: [
+            {id: 1, courses: ['CICS110']},
+            {id: 2, courses: ['MATH131']},
+            {id: 3, courses: ['MATH132']},
+            {id: 4, courses: ['MATH233']},
+            {id: 5, courses: ['MATH235']}
+        ]
     },
     {
-        requirement_name: 'Intro Abstract',
-        logic_type: 'Course-Based',
-        allows_overlap: false,
-        criteria: {
-            satisfied_by: [
-                { courses: ['CS250'] }, //AND within the brackets
-                { courses: ['MATH300']}
-            ]
-        }
+        name: 'Intro Abstract',
+        logicType: 'Course-Based',
+        allowsOverlap: false,
+        criteria: [
+            {id: 1, courses: ['CS250', 'MATH300']}
+        ]
     },
     {
-        requirement_name: 'Math JYW',
-        logic_type: 'Course-Based',
-        allows_overlap: false,
-        criteria: {
-            satisfied_by: [
-                { courses: ['MATH370'] }, //AND within the brackets
-
-            ]
-        }
+        name: 'Math JYW',
+        logicType: 'Course-Based',
+        allowsOverlap: false,
+        criteria: [
+            {id: 1, courses: ['MATH370']}
+        ]
+        
     },
     {
-        requirement_name: 'MATH IE',
-        logic_type: 'Course-Based',
-        allows_overlap: true,
-        criteria: {
-            satisfied_by: [
-                { courses: ['MATH455']}, //AND within the brackets
-                { courses: ['MATH456']},
-                { courses: ['MATH475']},
-                { courses: ['STAT525']}
-            ]
-        }
+        name: 'MATH IE',
+        logicType: 'Course-Based',
+        allowsOverlap: true,
+        criteria: [
+            {id:1, courses: ['MATH455','MATH456','MATH475','STAT525']},
+        ]
     },
     {
-        requirement_name: 'Advanced Calculus',
-        logic_type: 'Course-Based',
-        allows_overlap: false,
-        criteria: {
-            satisfied_by: [
-                { courses: ['MATH421']}, //AND within the brackets
-                { courses: ['MATH522']},
-                { courses: ['MATH523H']},
-                { courses: ['MATH524']},
-                { courses: ['MATH532H']}, 
-                { courses: ['MATH534H']},
-                { courses: ['MATH548']},
-                { courses: ['MATH552']},
-
-            ]
-        }
+        name: 'Advanced Calculus',
+        logicType: 'Course-Based',
+        allowsOverlap: false,
+        criteria: [
+            {id: 1, courses: ['MATH421','MATH522','MATH523H','MATH524','MATH532H','MATH534H','MATH548','MATH552']},
+        ]  
     },
     {
-        requirement_name: 'Applied Math Core',
-        logic_type: 'Course-Based',
-        allows_overlap: false,
-        criteria: {
-            satisfied_by: [
-                { courses: ['MATH331','MATH545','MATH551'] }, //AND within the brackets
-
-            ]
-        }
+        name: 'Applied Math Core',
+        logicType: 'Course-Based',
+        allowsOverlap: false,
+        criteria: [
+            {id: 1, courses: ['MATH331']},
+            {id: 2, courses: ['MATH545']},
+            {id: 3, courses: ['MATH551']}
+        ]
     },
     {
-        requirement_name: 'Applied Math Elective',
-        logic_type: 'Course-Based',
-        allows_overlap: false,
-        criteria: {
-            satisfied_by: [
-                { courses: ['MATH456'] },
-                { courses: ['MATH532'] },
-                { courses: ['MATH534'] },
-                { courses: ['MATH552'] },
-            ]
-        }
+        name: 'Applied Math Elective',
+        logicType: 'Course-Based',
+        allowsOverlap: false,
+        criteria: [
+            {id: 1, courses: ['MATH456','MATH532','MATH534','MATH552'] }
+        ]
+        
     },
     {
-        requirement_name: 'MATH400+',
-        logic_type: 'Course-Based',
-        allows_overlap: false,
-        criteria: {
-            satisfied_by: [
-                {department: 'CS', min_level: 400 },
-                {courses: ['STAT315']},
-                {courses: ['MATH331']}
-
-            ]
-        }
+        name: 'MATH400+',
+        logicType: 'Course-Based',
+        allowsOverlap: false,
+        criteria: [
+            {id: 1, courses: ['MATH331', 'STAT315'], department: 'MATH', min_level: 400 },
+        ]
     },
     {
-        requirement_name: 'MATH400+Strict',
-        logic_type: 'Course-Based',
-        allows_overlap: false,
-        criteria: {
-            satisfied_by: [
-                {department: 'CS', min_level: 400 },
-            ]
-        }
+        name: 'MATH400+Strict',
+        logicType: 'Course-Based',
+        allowsOverlap: false,
+        criteria:  [
+            {id: 1, department: 'MATH', min_level: 400 },
+        ]
     },
     {
-        requirement_name: 'MATH400++',
-        logic_type: 'Course-Based',
-        allows_overlap: false,
-        criteria: {
-            satisfied_by: [
-                {department: 'CS', min_level: 400 },
-                {courses: ['STAT315']},
-                // {courses: ['BME330']},
-                // {courses: ['Biog597GE']},
-                // {courses: ['BioChem471']},
-                // {courses: ['CHEM471']},
-                // {courses: ['CICS397A']},
-                {courses: ['CS311']},
-                {courses: ['CS383']},
-                {courses: ['CS445']},
-                {courses: ['CS501']},
-                {courses: ['CS513']},
-                {courses: ['CS514']},
-                {courses: ['CS532']},
-                {courses: ['CS575']},
-                {courses: ['CS585']},
-                {courses: ['CS589']},
-                {courses: ['CS590OP']},
-                // {courses: ['Chem475']},
-                // {courses: ['Chem476']},
-                // {courses: ['Chem584']},
-                // {courses: ['Chem585']},
-                // {courses: ['ChemEng231']},
-                // {courses: ['ChemEng475']},
-                // {courses: ['CE-Engin260']},
-                // {courses: ['Econ309']},
-                // {courses: ['Econ452']},
-                // {courses: ['ECE213', 'ECE313']},
-                // {courses: ['ECE214', 'ECE314']},
-                // {courses: ['ECE333']},
-                // {courses: ['LING492B']},
-                // {courses: ['MIE230']},
-                // {courses: ['MIE273']},
-                // {courses: ['MIE340']},
-                // {courses: ['MIE379']},
-                {courses: ['PHYSICS421']},
-                {courses: ['PHYSICS422']},
-                {courses: ['PHYSICS423']},
-                {courses: ['PHYSICS424']},
-                // {courses: ['PublicHealth390R']},
-                // {courses: ['PublicHealth460']},
-                // {courses: ['PublicHealth490Z']},
-                // {courses: ['ResEcon313']},
-
-
-            ]
-        }
+        name: 'MATH400++',
+        logicType: 'Course-Based',
+        allowsOverlap: false,
+        criteria: [
+                {id: 1, 
+                courses: ['STAT315', 'CS311', 'CS383', 'CS445', 'CS501', 'CS513', 'CS514', 'CS532','CS575','CS589','PHYSICS421','PHYSICS422','PHYSICS423','PHYSICS424'], 
+                department: 'MATH', 
+                min_level: 400 },
+        ]
     }
 
 ]
 
 mathPaths = [
     {
-        programName: 'Applied Math Primary Major',
+        program: 'Applied Math Primary Major',
+        allRequirements: mathReqs,
         requirements: [
             { name: 'Math Core', numReq: 1 },
             { name: 'Intro Abstract', numReq: 1 },
@@ -181,7 +109,8 @@ mathPaths = [
         ]
     },
     {
-        programName: 'Applied Math Secondary Major',
+        program: 'Applied Math Secondary Major',
+        allRequirements: mathReqs,
         requirements: [
             { name: 'Math Core', numReq: 1 },
             { name: 'Intro Abstract', numReq: 1 },
@@ -192,7 +121,8 @@ mathPaths = [
         ]
     },
     {
-        programName: 'Math Minor',
+        program: 'Math Minor',
+        allRequirements: mathReqs,
         requirements: [
             { name: 'Math Core', numReq: 1 },
             { name: 'MATH400+', numReq: 3 },
@@ -205,7 +135,8 @@ mathPaths = [
         ]
     },
     {
-        programName: 'Math Minor',
+        program: 'Math Minor',
+        allRequirements: mathReqs,
         requirements: [
             { name: 'Math Core', numReq: 1 },
             { name: 'MATH400+', numReq: 3 },
@@ -213,3 +144,4 @@ mathPaths = [
         ]
     }
 ]
+module.exports = mathPaths

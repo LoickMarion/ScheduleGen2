@@ -1,18 +1,21 @@
-/*        CREATE TABLE IF NOT EXISTS Requirement (
-            requirement_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL UNIQUE,
-            requirement_type TEXT NOT NULL,
-            logicType TEXT NOT NULL,
-            criteria TEXT NOT NULL
-        ); */
-
 const csReqs = [
     {
         name: 'CS Major Core Classes',
         logicType: 'Course-Based',
         allowsOverlap: false,
         criteria: [
-            { courses: ['CICS110', 'CICS160', 'CICS210', 'CS220', 'CS230', 'CS240', 'CS250', 'CS311',' MATH131','MATH132','MATH233','MATH235'] } //AND within the brackets
+            { id: 1, courses: ['CICS110']},
+            { id: 2, courses: ['CICS160']},
+            { id: 3, courses: ['CICS210']},
+            { id: 4, courses: ['CS220']},
+            { id: 5, courses: ['CS230']},
+            { id: 6, courses: ['CS240']},
+            { id: 7, courses: ['CS250']},
+            { id: 8, courses: ['CS311']},
+            { id: 9, courses: ['MATH131']},
+            { id: 10, courses: ['MATH132']},
+            { id: 11, courses: ['MATH233']},
+            { id: 12, courses: ['MATH235']}
         ]
         
     },
@@ -21,7 +24,9 @@ const csReqs = [
         logicType: 'Course-Based',
         allowsOverlap: false,
         criteria: [
-            { courses: ['CICS110', 'CICS160', 'CICS210'] } //AND within the brackets
+            { id: 1, courses: ['CICS110']},
+            { id: 2, courses: ['CICS160']},
+            { id: 3, courses: ['CICS210']},
         ]
         
     },
@@ -30,7 +35,7 @@ const csReqs = [
         logicType: 'Course-Based',
         allowsOverlap: false,
         criteria: [
-            { courses: ['CS305'] } //AND within the brackets
+            { id: 1, courses: ['CS305'] } 
         ]
     },
     {
@@ -38,8 +43,7 @@ const csReqs = [
         logicType: 'Course-Based',
         allowsOverlap: true,
         criteria: [
-            { courses: ['CS320'] }, //logical OR between brackets, any one bracket being satisfied is sufficient.
-            { courses: ['CS326'] } // need to figure a way to show that this can double count
+            { id: 1, courses: ['CS320','CS326'] }
         ]
     },
     {
@@ -56,20 +60,8 @@ const csReqs = [
         logicType: 'Course-Based',
         allowsOverlap: false,
         criteria: [
-            { department: 'CS', minLevel: 300},
-            { courses: ['MATH411'] },
-            { courses: ['MATH545'] },
-            { courses: ['MATH551'] },
-            { courses: ['MATH552'] },
-            { courses: ['LINGUIST301'] },
-            { courses: ['ECE547'] },
-            { courses: ['ECE668'] }
+            { id: 1, courses: ['MATH441', 'MATH545', 'MATH551', 'MATH552', 'LINGUIST301', 'ECE547', 'ECE668'], department: 'CS', minLevel: 300 }
         ]
-        /*
-        MATH411 => ['CS300++']
-        
-        */
-        
     },
     {
         name: 'CS400+',
@@ -101,10 +93,10 @@ const csReqs = [
         logicType: 'Course-Based',
         allowsOverlap: false,
         criteria: [
-            {courses: ['CS220']},
-            {courses: ['CS230']},
-            {courses: ['CS240']},
-            {courses: ['CS250']}
+            {id: 1, courses: ['CS220']},
+            {id: 2, courses: ['CS230']},
+            {id: 3, courses: ['CS240']},
+            {id: 4, courses: ['CS250']}
         ] 
     },
     {
@@ -112,18 +104,18 @@ const csReqs = [
         logicType: 'Course-Based',
         allowsOverlap: false,
         criteria: [
-            {courses: ['CICS256']},
-            {courses: ['CHEM111']},
-            {courses: ['CHEM112']},
-            {courses: ['CHEM121']},
-            {courses: ['CHEM122']},
-            {courses: ['GEOL101']},
-            {courses: ['GEOL103','GEOL131']},
-            {courses: ['GEOL105','GEOL131']},
-            {courses: ['PHYSICS151']},
-            {courses: ['PHYSICS181']},
-            {courses: ['PHYSICS152']},
-            {courses: ['PHYSICS182']},
+            {id: 1, courses: ['CICS256']},
+            {id: 2, courses: ['CHEM111']},
+            {id: 3, courses: ['CHEM112']},
+            {id: 4, courses: ['CHEM121']},
+            {id: 5, courses: ['CHEM122']},
+            {id: 6, courses: ['GEOL101']},
+            {id: 7, courses: ['GEOL103','GEOL131']},
+            {id: 8, courses: ['GEOL105','GEOL131']},
+            {id: 9, courses: ['PHYSICS151']},
+            {id: 10, courses: ['PHYSICS181']},
+            {id: 11, courses: ['PHYSICS152']},
+            {id: 12, courses: ['PHYSICS182']},
 
         ] 
     }

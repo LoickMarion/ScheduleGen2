@@ -1,4 +1,4 @@
-const courses = [
+const mathCourses = [
     {
       department: 'MATH',
       level: 131,
@@ -296,3 +296,4 @@ const courses = [
         availability: 'both'
       }
   ]
+  module.exports = mathCourses

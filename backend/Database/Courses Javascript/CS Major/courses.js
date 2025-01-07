@@ -1,4 +1,4 @@
-const courses = [
+const csCourses = [
     {
       department: 'CICS',
       level: 110,
@@ -402,4 +402,4 @@ const courses = [
       }
   ]
 
-module.exports = courses
+module.exports = csCourses
