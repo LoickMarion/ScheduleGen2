@@ -16,7 +16,7 @@ const mathReqs = [
         criteria: {
             satisfied_by: [
                 { courses: ['CS250'] }, //AND within the brackets
-                {courses: ['MATH300']}
+                { courses: ['MATH300']}
             ]
         }
     },
@@ -166,19 +166,50 @@ const mathReqs = [
 
 ]
 
-math_paths = [
+mathPaths = [
     {
-        program: 'Applied Math Primary Major',
-        requirements: [('Math Core', 1),('Intro Abstract', 1),('MATH JYW', 1), ('MATH IE', 1), ('Applied Math Core', 1), ('Applied Math Elective', 1), ('MATH400+', 2), ('MATH400++',1)]
+        programName: 'Applied Math Primary Major',
+        requirements: [
+            { name: 'Math Core', numReq: 1 },
+            { name: 'Intro Abstract', numReq: 1 },
+            { name: 'MATH JYW', numReq: 1 },
+            { name: 'MATH IE', numReq: 1 },
+            { name: 'Applied Math Core', numReq: 1 },
+            { name: 'Applied Math Elective', numReq: 1 },
+            { name: 'MATH400+', numReq: 2 },
+            { name: 'MATH400++', numReq: 1 }
+        ]
     },
     {
-        program: 'Applied Math Secondary Major',
-        requirements: [('Math Core', 1),('Intro Abstract', 1),('Applied Math Core', 1), ('Applied Math Elective', 1), ('MATH400+', 1), ('MATH400++',2)]
+        programName: 'Applied Math Secondary Major',
+        requirements: [
+            { name: 'Math Core', numReq: 1 },
+            { name: 'Intro Abstract', numReq: 1 },
+            { name: 'Applied Math Core', numReq: 1 },
+            { name: 'Applied Math Elective', numReq: 1 },
+            { name: 'MATH400+', numReq: 1 },
+            { name: 'MATH400++', numReq: 2 }
+        ]
     },
     {
-        program: 'Math Minor',
-        requirements: [('Math Core', 1),('MATH400+', 3), ('MATH400++',1)]
+        programName: 'Math Minor',
+        requirements: [
+            { name: 'Math Core', numReq: 1 },
+            { name: 'MATH400+', numReq: 3 },
+            { name: 'MATH400++', numReq: 1 },
+            { name: 'Intro Abstract', numReq: 1 },
+            { name: 'Applied Math Core', numReq: 1 },
+            { name: 'Applied Math Elective', numReq: 1 },
+            { name: 'MATH400+', numReq: 1 },
+            { name: 'MATH400++', numReq: 2 }
+        ]
     },
-
-    //add honors when time
+    {
+        programName: 'Math Minor',
+        requirements: [
+            { name: 'Math Core', numReq: 1 },
+            { name: 'MATH400+', numReq: 3 },
+            { name: 'MATH400++', numReq: 1 }
+        ]
+    }
 ]
