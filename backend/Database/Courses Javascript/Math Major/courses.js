@@ -1,4 +1,4 @@
-math_courses = [
+const courses = [
     {
       department: 'MATH',
       level: 131,

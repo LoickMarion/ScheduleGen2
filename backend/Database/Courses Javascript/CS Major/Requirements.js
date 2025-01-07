@@ -6,7 +6,7 @@
             criteria TEXT NOT NULL
         ); */
 
-cs_reqs = [
+const csReqs = [
     {
         requirement_name: 'CS Major Core Classes',
         logic_type: 'Course-Based',

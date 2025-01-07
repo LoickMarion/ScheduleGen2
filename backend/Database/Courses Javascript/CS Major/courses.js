@@ -1,4 +1,4 @@
-let courses = [
+const courses = [
     {
       department: 'CICS',
       level: 110,

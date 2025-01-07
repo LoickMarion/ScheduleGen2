@@ -1,4 +1,4 @@
-math_reqs = [
+const mathReqs = [
     {
         requirement_name: 'Math Core',
         logic_type: 'Course-Based',
