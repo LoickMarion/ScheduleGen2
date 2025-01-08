@@ -1,119 +1,160 @@
-/*
-CICS 110 -> CICS 160 -> CICS 210 -> CS220/CS230
-*/
+const csPaths = require('./Database/Courses Javascript/CS Major/Requirements.js')
+const csCourses = require('./Database/Courses Javascript/CS Major/courses.js')
+const mathPaths = require('./Database/Courses Javascript/Math Major/Requirements.js')
+const mathCourses = require('./Database/Courses Javascript/Math Major/courses.js')
+const { SpecificRequirement, Requirement, Program, Course } = require('./dataStructures.js')
 
-class Course{
-    constructor(courseName, credits, prereqs = [], fall = true, spring = true){
-        this.courseName = courseName
-        this.prereqs = prereqs
-        this.credits = credits
-        this.fall = fall
-        this.spring = spring
-    }
-    
-    getPrereqs(){
-        return this.prereqs.map((e)=>e.courseName)
-    }
-    
-    
-    displayCourseInfo(){
-        // this.prereqs.length > 0 ? (console.log(`The course ${this.courseName} has the following prerequisites:\n`), this.prereqs.forEach((course) => console.log(course.getPrereqs()))) :             console.log(`The course ${this.courseName} has no prerequisites.`)
+/**
+ * Loads the user's selected programs from the database
+ * @param {Array<string>} selectedPrograms - Array of programs user wishes to take
+ * @returns {Array<Program>}
+ */
+function loadPrograms(selectedPrograms) {
+  const allPrograms = []
+    selectedPrograms.forEach((program) => {
+      specifics = []
+      program.requirements.forEach((req) => {
+        specifics.push(new SpecificRequirement(req.name, req.numReq))
+      })
+      allPrograms.push(new Program(program.program, specifics))
+    })
 
-        if(this.prereqs.length > 0){
-            console.log(`The course ${this.courseName} has the following prerequisites:\n`)
-            this.prereqs.forEach((prereqs) => console.log(prereqs.courseName))
-
-        } else {
-            console.log(`The course ${this.courseName} has no prerequisites.`)
-        }
-    }
+  return allPrograms
 }
 
+/**
+ * Loads all courses from database
+ * @param {Array<Object>} courses - Imported courses
+ * @returns {Array<Course>}
+ */
+function loadCourses(courses){
+  // Here we would load the courses from database, just importing them for now
+  const allCourses = []
+  courses.forEach((subject) => {
+    subject.forEach((element) => {
+      allCourses.push(new Course(element.department, element.level, element.level_suffix, element.credits, element.prerequisites, element.availability))
+    })
+  })
+  return allCourses
+}
 
-math131 = new Course('MATH131', 4)
-math132 = new Course('MATH132', 4, [[math131]])
-stats315 = new Course('STATS315', 4, [[math132]])
-cics110 = new Course('CICS110', 4)
-cics160 = new Course('CICS160', 4, [[cics110]])
-cics198c = new Course('CICS198c', 1, [[cics160]])
-cics210 = new Course('CICS210', 4, [[cics160]])
-cs220 = new Course('CS220', 4, [[cics210]])
-cs230 = new Course('CS230', 4, [[cics198c, cics210]])
-cs240 = new Course('CS240', 4, [[cics160, math132]])
-cs250 = new Course('CS250', 4, [[cics160, math132]])
-cs311 = new Course('CS311', 4, [[cs250, cics210]])
-cs326 = new Course('CS326', 4, [[cs220], [cs230]])
-// cs240.displayCourseInfo()
+/**
+ * Loads all requirements from database
+ * @param {Array<Object>} requirements - Imported requirements
+ * @returns {Array<Requirement>}
+ */
+function loadRequirements(requirements){
+  // Here we would load the courses from database, just importing them for now
+  const allRequirements = []
+  requirements.forEach((requirement) => {
+    requirement.forEach((element) => {
+      allRequirements.push(new Requirement(element.name, element.logicType, element.allowsOverlap, element.criteria))
+    })
+  })
+  return allRequirements
+}
 
-// Utility function to recursively expand course prerequisites
+/** 
+ * Given a list of programs and courses, this function returns the optimal courses to take.
+ * Optimal here is currently defined as the minimal number of courses to take to satisfy all requirements.
+ * 
+@param {Array<Program>} allPrograms An array of program objects
 
-//courseList: the classes added so far in the iteration
-//coursesToAdd: the classes that still need to be processed
-//masterList: list to store the finished iteration of each path
-const expandUserInputViaPrereqs = (coursesToAdd, masterList, courseList=[]) => {
-    while(coursesToAdd.length > 0){
-        
-        let course = coursesToAdd.shift()
-        if (!courseList.includes(course)) {
-          courseList.push(course);
-        }
+@param {Array<Course>} allCourses An array of course objects
 
-        
-        if(course.prereqs.length === 0){
-            continue
-        }
-        
-        //check if multiple ways to satisfy prereqs
-        else if(course.prereqs.length > 1){
-          course.prereqs.forEach((prereqList)=>{
-            let newCoursesToAdd = coursesToAdd.slice()
-            let newCourseList = courseList.slice();
-            prereqList.forEach((course) => {
-                if (!newCoursesToAdd.includes(course)){
-                  console.log(course)
-                  newCoursesToAdd.push(course)
+@returns {Array<string>} selectedCourses Returns an array of optimal courses
+*/
+function findMinimalCourses(allPrograms, allCourses, allRequirements) {
+  const requirementMap = new Map();  // Maps requirements to their courses
+  const courseToReqs = new Map();    // Maps courses to the requirements they satisfy
+  const requirementSet = new Set(); // List of all requirements
+  // Step 1: Flatten all requirements and track the programs and courses satisfying them
+  allPrograms.forEach(program => {
+    program.requirements.forEach(req => {
+      const reqName = req.name;
+      if (!requirementMap[reqName]) {
+        const reqDetails = allRequirements.find(r => r.name === reqName);
+        if (reqDetails) {
+          requirementMap.set(reqName, {
+            criteria: reqDetails.criteria,
+            count: req.numReq,
+            logic: reqDetails.logicType,
+            allowsOverlap: reqDetails.allowsOverlap,
+            program: program.program
+          });
+          requirementSet.add(reqName);
+          reqDetails.criteria.forEach((entry) => {
+            if (entry.courses) {
+              entry.courses.forEach((course) => {
+                const reqsSatisfied = courseToReqs.get(course) ? courseToReqs.get(course) : []
+                if (!reqsSatisfied.includes(reqName)) {
+                  reqsSatisfied.push(reqName)
                 }
+                courseToReqs.set(course, reqsSatisfied)
+
               })
-            expandUserInputViaPrereqs(newCoursesToAdd, masterList, newCourseList)
-          })
-          return
-        } 
-        else {
-        //if only one set of prereqs, add them all            
-            course.prereqs[0].forEach((prereq) => {
-                if (!courseList.includes(prereq)) {
-                    coursesToAdd.push(prereq);
+            }
+            if (entry.minLevel) {
+              const courses = getAllCourses(allCourses, entry.department, entry.minLevel)
+              courses.forEach((course) => {
+                const combinedName = course.level_suffix ? course.department + course.level + course.level_suffix : course.department + course.level
+
+                const reqsSatisfied = courseToReqs.get(combinedName) ? courseToReqs.get(combinedName) : []
+                if (!reqsSatisfied.includes(reqName)) {
+                  reqsSatisfied.push(reqName)
                 }
-            })
+                courseToReqs.set(combinedName, reqsSatisfied)
+              })
+            }
+
+          })
         }
-    }
-    masterList.push(courseList)
+      } else {
+        requirementMap[reqName].programs.push(program.name);
+      }
+    });
+  });
 
-}
+  // Step 2: Add core courses first (courses we are guaranteed to need)
+  let selectedCourses = new Set();
+  const satisfiedReqs = [];
+  const coreCourses = Array.from(courseToReqs.keys()).filter((course) => {
+    return courseToReqs.get(course).some((reqName) => reqName.includes('Core'));
+  });
 
-// expand(courseList = [], coursesToAdd = [311])
-/*
-[],[326]
-[326],[230,198c]
-[326,230,160],[ 198c]
-*/
-masterList = []
-expandUserInputViaPrereqs([cs326], masterList)
-masterList.forEach((e) => { console.log(e.map((i) => i.courseName))
+  coreCourses.forEach((course) => {
+    selectedCourses.add(course)
+
   })
 
+  requirementSet.forEach(reqName => {
+    if (reqName.includes('Core')) {
+      // Collect all courses satisfying "Core" requirements
 
+      coreCourses.forEach(course => selectedCourses.add(course));
 
-  // Example coursePrereqs object with dependencies
-  const coursePrereqs = {
-    'CICS110': [],
-    'CICS160': ['CICS110'],
-    'CICS210': ['CICS160'],
-    'CS220': ['CICS210'],
-    'CS230': ['CICS210', 'CICS198c'],
-    'CS240': ['CICS160', 'MATH132'],
-    'CS250': ['CICS160', 'MATH132'],
-    'CS311': ['CICS210', 'CS250']
-  };
-  
-  
+      // Update satisfied requirements
+      coreCourses.forEach(course => {
+        courseToReqs.get(course).forEach(({ reqName, program }) => {
+          if (!satisfiedReqs[program]) satisfiedReqs[program] = {};
+          satisfiedReqs[program][reqName] = (satisfiedReqs[program][reqName] || 0) + 1;
+        });
+      });
+    }
+  });
+
+  return requirementSet
+}
+
+function getAllCourses(courses, department, minLevel) {
+  return courses.filter((course) => {
+    return department === course.department && minLevel <= course.level
+  })
+}
+
+const allPrograms = loadPrograms([csPaths[0], mathPaths[1]])
+const allCourses = loadCourses([mathCourses, csCourses])
+const allRequirements = loadRequirements([mathPaths[0].allRequirements, csPaths[0].allRequirements])
+const minimalCourses = findMinimalCourses(allPrograms, allCourses, allRequirements)
+
+console.log(minimalCourses)

@@ -25,7 +25,6 @@ function findMinimalCourses(programs, allCourses) {
     const requirementMap = new Map();  // Maps requirements to their courses
     const courseToReqs = new Map();    // Maps courses to the requirements they satisfy
     const allRequirements = []; // List of all requirements
-    console.log(programs[0])
     // Step 1: Flatten all requirements and track the programs and courses satisfying them
     programs.forEach(program => {
         program.requirements.forEach(req => {
@@ -104,7 +103,7 @@ function findMinimalCourses(programs, allCourses) {
         }
     });
     
-    return courseToReqs
+    return allRequirements
     // Remove satisfied requirements from the remaining list
     let remainingReqs = {};
     Object.keys(requirementMap).forEach(reqName => {

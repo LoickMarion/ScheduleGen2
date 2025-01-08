@@ -1,4 +1,18 @@
 /**
+ * Represents a single specificRequirement 
+ */
+class SpecificRequirement{
+    /**
+     * @param {string} name - The name of the specificRequirement.
+     * @param {number} numReq - The number of requirements needed to fulfill this specificRequirement.
+     */
+    constructor(name, numReq){
+        this.name = name;
+        this.numReq = numReq;
+    }
+}
+
+/**
  * Represents a single requirement for a program.
  */
 class Requirement {
@@ -14,22 +28,6 @@ class Requirement {
         this.allowsOverlap = allowsOverlap;
         this.criteria = criteria;
     }
-
-    getName(){
-        return this.name
-    }
-
-    getLogicType(){
-        return this.logicType
-    }
-
-    getAllowsOverlap(){
-        return this.allowsOverlap
-    }
-
-    getCriteria(){
-        return this.criteria
-    }
 }
 
 /**
@@ -39,147 +37,36 @@ class Program {
     /**
      * Create a program.
      * @param {string} programName - The name of the program (e.g., "CS Major").
-     * @param {Array<Requirement>} allRequirements - All possible requirements for the program.
-     * @param {Array<Object>} specificRequirements - The specific requirements for this program.
+     * @param {Array<Object>} requirements - The specific requirements for this program
      */
-    constructor(programName, allRequirements, specificRequirements) {
+    constructor(programName = 'N/A', requirements = []) {
         this.programName = programName;
-        this.allRequirements = allRequirements;
-        this.specificRequirements = specificRequirements;
+        this.requirements = requirements;
     }
 }
 
-const csRequirements = [
-    new Requirement(
-        'CS Major Core Classes',
-        'Course-Based',
-        false,
-        [{ courses: ['CICS110', 'CICS160', 'CICS210', 'CS220', 'CS230', 'CS240', 'CS250', 'CS311', 'MATH131', 'MATH132', 'MATH233', 'MATH235'] }]
-    ),
-    new Requirement(
-        'CS Minor Core Classes',
-        'Course-Based',
-        false,
-        [{ courses: ['CICS110', 'CICS160', 'CICS210'] }]
-    ),
-    new Requirement(
-        'CS JYW',
-        'Course-Based',
-        false,
-        [{ courses: ['CS305'] }]
-    ),
-    new Requirement(
-        'CS IE',
-        'Course-Based',
-        true,
-        [
-            { courses: ['CS320'] },
-            { courses: ['CS326'] }
-        ]
-    ),
-    new Requirement(
-        'CS300+',
-        'Course-Based',
-        false,
-        [{ department: 'CS', minLevel: 300 }]
-    ),
-    new Requirement(
-        'CS300++',
-        'Course-Based',
-        false,
-        [
-            { department: 'CS', minLevel: 300 },
-            { courses: ['MATH411'] },
-            { courses: ['MATH545', 'MATH551', 'MATH552'] },
-            { courses: ['LINGUIST301'] },
-            { courses: ['ECE547', 'ECE668'] }
-        ]
-    ),
-    new Requirement(
-        'CS400+',
-        'Course-Based',
-        false,
-        [{ department: 'CS', minLevel: 400 }]
-    ),
-    new Requirement(
-        'CS500+',
-        'Course-Based',
-        false,
-        [{ department: 'CS', minLevel: 500 }]
-    ),
-    new Requirement(
-        'CS200Level',
-        'Course-Based',
-        false,
-        [
-            { courses: ['CS220'] },
-            { courses: ['CS230'] },
-            { courses: ['CS240'] },
-            { courses: ['CS250'] }
-        ]
-    ),
-    new Requirement(
-        'CSLabScience',
-        'Course-Based',
-        false,
-        [
-            { courses: ['CICS256'] },
-            { courses: ['CHEM111', 'CHEM112', 'CHEM121', 'CHEM122'] },
-            { courses: ['GEOL101', 'GEOL103', 'GEOL131'] },
-            { courses: ['PHYSICS151', 'PHYSICS181'] },
-            { courses: ['PHYSICS152', 'PHYSICS182'] }
-        ]
-    )
-];
+/**
+ * Represents a course.
+ */
+class Course {
+    /**
+     * Create a course.
+     * @param {string} department - The name of the course's department
+     * @param {number} level - The course's level (e.g., 101, 200, 300)
+     * @param {string} level_suffix - The course's level suffix (e.g., "AB", "AF")
+     * @param {number} credits - The number of credits the course is worth
+     * @param {Array<string>} prerequisites - The prerequisites for the course
+     * @param {string} availability - The availability of the course (e.g., "both", "fall", "spring")
+     */
 
-const csPrograms = [
-    new Program(
-        'CS Primary Major',
-        csRequirements,
-        [
-            { name: 'CS Major Core Classes', numReq: 1 },
-            { name: 'CS JYW', numReq: 1 },
-            { name: 'CS IE', numReq: 1 },
-            { name: 'CS300+', numReq: 3 },
-            { name: 'CS300++', numReq: 1 },
-            { name: 'CS400+', numReq: 3 },
-            { name: 'CSLabScience', numReq: 2 }
-        ]
-    ),
-    new Program(
-        'CS Secondary Major',
-        csRequirements,
-        [
-            { name: 'CS Major Core Classes', numReq: 1 },
-            { name: 'CS300+', numReq: 3 },
-            { name: 'CS300++', numReq: 1 },
-            { name: 'CS400+', numReq: 3 },
-            { name: 'CSLabScience', numReq: 2 }
-        ]
-    ),
-    new Program(
-        'CS Minor',
-        csRequirements,
-        [
-            { name: 'CS Minor Core Classes', numReq: 1 },
-            { name: 'CS200Level', numReq: 2 },
-            { name: 'CS300+', numReq: 1 }
-        ]
-    ),
-    new Program(
-        'CS 4+1',
-        csRequirements,
-        [
-            { name: 'CS Major Core Classes', numReq: 1 },
-            { name: 'CS JYW', numReq: 1 },
-            { name: 'CS IE', numReq: 1 },
-            { name: 'CS300+', numReq: 3 },
-            { name: 'CS300++', numReq: 1 },
-            { name: 'CS400+', numReq: 1 },
-            { name: 'CS500+', numReq: 4 },
-            { name: 'CSLabScience', numReq: 2 }
-        ]
-    )
-];
+    constructor(department, level, level_suffix, credits, prerequisites, availability){
+        this.department = department;
+        this.level = level;
+        this.level_suffix = level_suffix;
+        this.credits = credits;
+        this.prerequisites = prerequisites;
+        this.availability = availability;
+    }
+}
 
-module.exports = {csRequirements, csPrograms };
+module.exports = {SpecificRequirement, Requirement, Program, Course };
