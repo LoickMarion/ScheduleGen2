@@ -89,7 +89,16 @@ const mathReqs = [
                 department: 'MATH', 
                 min_level: 400 },
         ]
-    }
+    },
+    {
+        name: 'CS300+',
+        logicType: 'Course-Based',
+        allowsOverlap: false,
+        criteria: [
+            { department: 'CS', minLevel: 300 }
+        ]
+        
+    },
 
 ]
 
@@ -117,7 +126,8 @@ mathPaths = [
             { name: 'Applied Math Core', numReq: 1 },
             { name: 'Applied Math Elective', numReq: 1 },
             { name: 'MATH400+', numReq: 1 },
-            { name: 'MATH400++', numReq: 2 }
+            { name: 'MATH400++', numReq: 2 },
+            { name: 'CS300+', numReq: 1}
         ]
     },
     {

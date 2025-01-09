@@ -5,10 +5,12 @@ class SpecificRequirement{
     /**
      * @param {string} name - The name of the specificRequirement.
      * @param {number} numReq - The number of requirements needed to fulfill this specificRequirement.
+     * @param {string} program - The program that the  requirement belongs to 
      */
-    constructor(name, numReq){
+    constructor(name, numReq, program){
         this.name = name;
         this.numReq = numReq;
+        this.program = program;
     }
 }
 
