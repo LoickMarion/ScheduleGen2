@@ -64,7 +64,7 @@ const csCourses = [
       availability: 'both'
     },
     {
-      department: 'CS',
+      department: 'CICS',
       level: 305,
       level_suffix: null,
       credits: 3,
