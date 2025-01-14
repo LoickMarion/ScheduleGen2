@@ -51,7 +51,7 @@ const csReqs = [
         logicType: 'Course-Based',
         allowsOverlap: false,
         criteria: [
-            { department: 'CS', minLevel: 300 }
+            { id: 1, department: 'CS', minLevel: 300 }
         ]
         
     },
@@ -60,7 +60,8 @@ const csReqs = [
         logicType: 'Course-Based',
         allowsOverlap: false,
         criteria: [
-            { id: 1, courses: ['MATH441', 'MATH545', 'MATH551', 'MATH552', 'LINGUIST301', 'ECE547', 'ECE668'], department: 'CS', minLevel: 300 }
+            { id: 1, courses: ['MATH441', 'MATH545', 'MATH551', 'MATH552', 'LINGUIST301', 'ECE547', 'ECE668']},
+            { id: 2, department: 'CS', minLevel: 300}
         ]
     },
     {
@@ -68,7 +69,7 @@ const csReqs = [
         logicType: 'Course-Based',
         allowsOverlap: false,
         criteria: [
-            {department: 'CS', minLevel: 400 }
+            {id: 1, department: 'CS', minLevel: 400 }
         ]
     },
     {
@@ -76,7 +77,7 @@ const csReqs = [
         logicType: 'Course-Based',
         allowsOverlap: false,
         criteria: [
-            {department: 'CS', minLevel: 400 }
+            {id: 1, department: 'CS', minLevel: 400 }
         ]
     },
     {
@@ -84,7 +85,7 @@ const csReqs = [
         logicType: 'Course-Based',
         allowsOverlap: false,
         criteria:  [
-            {department: 'CS', minLevel: 500}
+            {id: 1, department: 'CS', minLevel: 500}
         ]
     },
 

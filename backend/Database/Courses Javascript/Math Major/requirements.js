@@ -68,7 +68,8 @@ const mathReqs = [
         logicType: 'Course-Based',
         allowsOverlap: false,
         criteria: [
-            {id: 1, courses: ['MATH331', 'STAT315'], department: 'MATH', min_level: 400 },
+            {id: 1, courses: ['MATH331', 'STAT315'] },
+            {id: 2,  department: 'MATH', min_level: 400},
         ]
     },
     {
@@ -85,9 +86,8 @@ const mathReqs = [
         allowsOverlap: false,
         criteria: [
                 {id: 1, 
-                courses: ['STAT315', 'CS311', 'CS383', 'CS445', 'CS501', 'CS513', 'CS514', 'CS532','CS575','CS589','PHYSICS421','PHYSICS422','PHYSICS423','PHYSICS424'], 
-                department: 'MATH', 
-                min_level: 400 },
+                courses: ['STAT315', 'CS311', 'CS383', 'CS445', 'CS501', 'CS513', 'CS514', 'CS532','CS575','CS589','PHYSICS421','PHYSICS422','PHYSICS423','PHYSICS424']},
+                {id: 2,  department: 'MATH', min_level: 400}
         ]
     },
     {

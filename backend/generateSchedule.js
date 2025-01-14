@@ -65,9 +65,10 @@ function loadRequirements(requirements){
 @returns {Array<string>} selectedCourses Returns an array of optimal courses
 */
 function findMinimalCourses(allPrograms, allCourses, allRequirements) {
-    const requirementMap = new Map();  // Maps requirements to their courses
+    const requirementMap = new Map();  // Maps requirement name to the requirement object
     const courseToReqs = new Map();    // Maps courses to the requirements they satisfy
     const requirementSet = new Set(); // List of all requirements
+    const reqToCourses = new Map();   // Maps reqoop Hell yea maps reqoop (im imagining it "maps re-qoop")
     const remainingReqs = []
     // Step 1: Flatten all requirements and track the programs and courses satisfying them
     allPrograms.forEach(program => {
@@ -91,6 +92,8 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
                     reqDetails.criteria.forEach((entry) => {
 
                     if (entry.courses) {
+                        const coursesForReq = reqToCourses.get(reqName) || [];
+
                         entry.courses.forEach((course) => {
                         const reqsSatisfied = courseToReqs.get(course) ? courseToReqs.get(course) : []
                         if (!reqsSatisfied.includes(reqName)) {
@@ -98,7 +101,12 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
                         }
                         courseToReqs.set(course, reqsSatisfied)
 
+                        if(!coursesForReq.includes(course)){
+                          coursesForReq.push(course)
+                        }
+
                         })
+                        reqToCourses.set(reqName, coursesForReq)
                     }
 
                     if (entry.minLevel) {
@@ -112,6 +120,8 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
                         }
                         courseToReqs.set(combinedName, reqsSatisfied)
                         })
+                        console.log(courses)
+                        reqToCourses.set(combinedName, )// Need an array of all courses
                     }
 
                     })
@@ -124,36 +134,61 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
             }
         });
     });
-    return requirementMap
+
+
+    //make a list of all requirements (no like the object that has criteria, and programs)
+
+    
+    Array.from(requirementMap.keys()).forEach((reqName) => {
+
+      const requirement = requirementMap.get(reqName)
+
+      for(let i = 0; i < requirement.count.length; i++){
+        for(let j = 1; j <= requirement.count[i]; j++){
+          const req = {};
+          req.name = reqName;
+          req.program = requirement.programs[i];
+          req.logic = requirement.logic;
+          req.allowsOverlap = requirement.allowsOverlap;
+          req.criteria = requirement.criteria;
+          remainingReqs.push(req);
+        }
+      }
+    })
+    //Now remove reqs from that list as we add courses to another should be the general idea yea
+
     // Step 2: Add core courses first (courses we are guaranteed to need)
-    let selectedCourses = new Set();
+    const selectedCourses = new Set();
     const satisfiedReqs = [];
+
     const coreCourses = Array.from(courseToReqs.keys()).filter((course) => {
-    return courseToReqs.get(course).some((reqName) => reqName.includes('Core'));
+      return courseToReqs.get(course).some((reqName) => reqName.includes('Core'));
     });
+
+    // Step 2a: eliminate requirements knocked out by the core courses.
 
     coreCourses.forEach((course) => {
-    selectedCourses.add(course)
+      const programs = []
+      selectedCourses.add(course)
+      for(const req of remainingReqs){
+        const allCriteria = []
+        //check if course can still be used to satisfy that requirement (i.e. not already used for the major)
+        if(!programs.includes(req.program) || req.allowsOverlap ){
+          //check if the course satisfies the req
 
+            req.criteria.forEach((criterion) => {
+              if(criterion.courses){
+                allCriteria.push(criterion.courses)
+                
+              }
+            })
+          }
+          reqToCourses.set(req.name, allCriteria)
+        
+      }
+      console.log(reqToCourses)
     })
-
-    requirementSet.forEach(reqName => {
-    if (reqName.includes('Core')) {
-        // Collect all courses satisfying "Core" requirements
-
-        coreCourses.forEach(course => selectedCourses.add(course));
-
-        // Update satisfied requirements
-        coreCourses.forEach(course => {
-        courseToReqs.get(course).forEach(({ reqName, program }) => {
-            if (!satisfiedReqs[program]) satisfiedReqs[program] = {};
-            satisfiedReqs[program][reqName] = (satisfiedReqs[program][reqName] || 0) + 1;
-        });
-        });
-    }
-    });
-
-    return requirementSet
+    return remainingReqs
 
     // Remove satisfied requirements from the remaining list
     Object.keys(requirementMap).forEach(reqName => {
@@ -223,5 +258,5 @@ const allPrograms = loadPrograms([csPaths[0], mathPaths[1]])
 const allCourses = loadCourses([mathCourses, csCourses])
 const allRequirements = loadRequirements([mathPaths[0].allRequirements, csPaths[0].allRequirements])
 const minimalCourses = findMinimalCourses(allPrograms, allCourses, allRequirements)
-
-console.log(minimalCourses)
+findMinimalCourses(allPrograms, allCourses, allRequirements)
+// console.log(minimalCourses)
