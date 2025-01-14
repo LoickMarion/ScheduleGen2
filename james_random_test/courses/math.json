@@ -1,0 +1,30 @@
+[
+    {
+        "department": "MATH",
+        "code": "131",
+        "fall": true,
+        "spring": true,
+        "credits": 4
+    },
+    {
+        "department": "MATH",
+        "code": "132",
+        "fall": true,
+        "spring": true,
+        "credits": 4
+    },
+    {
+        "department": "MATH",
+        "code": "233",
+        "fall": true,
+        "spring": true,
+        "credits": 4
+    },
+    {
+        "department": "MATH",
+        "code": "235",
+        "fall": true,
+        "spring": true,
+        "credits": 4
+    }
+]
