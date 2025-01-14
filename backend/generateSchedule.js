@@ -102,7 +102,17 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
                         courseToReqs.set(course, reqsSatisfied)
 
                         if(!coursesForReq.includes(course)){
-                          coursesForReq.push(course)
+                          if(course.charAt(course.length - 1) === '+'){
+                            const courseParts = course.match(/[A-Za-z]+|\d+/g)
+                            suitableCourses = getAllCourses(allCourses, courseParts[0], courseParts[1])
+                            suitableCourses.forEach((suitableCourse => {
+                              const combinedName = suitableCourse.level_suffix ? suitableCourse.department + suitableCourse.level + suitableCourse.level_suffix : suitableCourse.department + suitableCourse.level
+                              coursesForReq.push(combinedName)
+                            }))
+                            
+                          } else {
+                            coursesForReq.push(course)
+                          }
                         }
 
                         })
@@ -120,14 +130,13 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
                         }
                         courseToReqs.set(combinedName, reqsSatisfied)
                         })
-                        console.log(courses)
-                        reqToCourses.set(combinedName, )// Need an array of all courses
+
+                        
                     }
 
                     })
                 }
             } 
-            //attempt to show that 
             else{
                 requirementMap.get(reqName).programs.push(program.programName)
                 requirementMap.get(reqName).count.push(req.numReq)
@@ -135,10 +144,9 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
         });
     });
 
+    console.log(reqToCourses)
+    //make a list of all requirements
 
-    //make a list of all requirements (no like the object that has criteria, and programs)
-
-    
     Array.from(requirementMap.keys()).forEach((reqName) => {
 
       const requirement = requirementMap.get(reqName)
@@ -155,7 +163,6 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
         }
       }
     })
-    //Now remove reqs from that list as we add courses to another should be the general idea yea
 
     // Step 2: Add core courses first (courses we are guaranteed to need)
     const selectedCourses = new Set();
@@ -183,10 +190,9 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
               }
             })
           }
-          reqToCourses.set(req.name, allCriteria)
+          
         
       }
-      console.log(reqToCourses)
     })
     return remainingReqs
 
@@ -259,4 +265,4 @@ const allCourses = loadCourses([mathCourses, csCourses])
 const allRequirements = loadRequirements([mathPaths[0].allRequirements, csPaths[0].allRequirements])
 const minimalCourses = findMinimalCourses(allPrograms, allCourses, allRequirements)
 findMinimalCourses(allPrograms, allCourses, allRequirements)
-// console.log(minimalCourses)
+//console.log(minimalCourses)
