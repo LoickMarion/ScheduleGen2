@@ -1,3 +1,5 @@
+const { Course } = require('../dataStructures.js')
+
 function createCourseObjects(courseArray) {
     return courseArray.map((course, index) => {
         const [department, code, fall, spring, credits] = course;
@@ -11,27 +13,29 @@ function createCourseObjects(courseArray) {
         else if (fall) availability = 'fall';
         else if (spring) availability = 'spring';
         let prerequisites = []
-        return {
+        return new Course(
             department,
             level,
             level_suffix,
             credits,
             prerequisites,
             availability
-        };
+        );
     });
 }
 
 // Generate the course objects for core classes
 
+
+//TODO add prereqs
 const upper_levels = [
     ['MATH','405',true,true,3],
     ['MATH','411',true,true,3],
     ['MATH','412',true,true,3],
     ['MATH','421',true,true,3],
     ['MATH','437',true,true,3],
-    ['MATH', '455',true,true,3],
-    ['MATH', '456',true,true,3],
+    ['MATH','455',true,true,3],
+    ['MATH','456',true,true,3],
     ['MATH','461',true,true,3],
     ['MATH','471',true,true,3],
     ['MATH','475',true,true,3],
@@ -51,15 +55,17 @@ const upper_levels = [
     ['MATH','563H',true,true,3],
     ['MATH','571',true,true,3],
     ['MATH','590STA',true,true,3],
-    ['STAT', '315',true,true,3],
+    ['STAT','315',true,true,3],
     ['STAT','501',true,true,3],
     ['STAT','516',true,true,3],
     ['STAT','525',true,true,3],
     ['STAT','526',true,true,3],
-    ['STAT', '530',true,true,3],
+    ['STAT','530',true,true,3],
     ['STAT','535',true,true,3],
     ['STAT','590T',true,true,3]
 ]
 const coreCourseObjects = createCourseObjects(upper_levels);
 
-console.log(coreCourseObjects);
+coreCourseObjects.forEach(element => {
+    
+});
