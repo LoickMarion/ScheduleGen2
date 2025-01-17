@@ -22,6 +22,7 @@ db.run(`DROP TABLE IF EXISTS courses`, (err) => {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             department TEXT,
             code TEXT NOT NULL,
+            suffix TEXT,
             fall BOOLEAN,
             spring BOOLEAN,
             credits INTEGER
@@ -56,14 +57,18 @@ db.run(`DROP TABLE IF EXISTS courses`, (err) => {
 
                             courses.forEach((course) => {
                                 db.run(
-                                    `INSERT INTO courses (department, code, fall, spring, credits) 
-                                     VALUES (?, ?, ?, ?, ?)`,
-                                    [course.department, course.code, course.fall, course.spring, course.credits],
+                                    `INSERT INTO courses (department, code, suffix, fall, spring, credits) 
+                                     VALUES (?, ?, ?, ?, ?, ?)`,
+                                    [course.department, course.code, course.suffix, course.fall, course.spring, course.credits],
                                     (err) => {
                                         if (err) {
                                             console.error(`Error inserting data: ${err.message}`);
                                         } else {
-                                            console.log(`Inserted course: ${course.department + course.code}`);
+                                            if(course.suffix){
+                                                console.log(`Inserted course: ${course.department + course.code + course.suffix}`);
+                                            } else {
+                                                console.log(`Inserted course: ${course.department + course.code}`);
+                                            }
                                         }
 
                                         
