@@ -7,7 +7,7 @@ const { SpecificRequirement, Requirement, Program, Course } = require('./dataStr
 /**
  * Loads the user's selected programs from the database
  * @param {Array<string>} selectedPrograms - Array of programs user wishes to take
- * @returns {Array<Program>} Array of Program objects
+ * @returns {Array<Program>}
  */
 function loadPrograms(selectedPrograms) {
   const allPrograms = []
@@ -25,7 +25,7 @@ function loadPrograms(selectedPrograms) {
 /**
  * Loads all courses from database
  * @param {Array<Object>} courses - Imported courses
- * @returns {Array<Course>} Array of Course objects
+ * @returns {Array<Course>}
  */
 function loadCourses(courses){
   // Here we would load the courses from database, just importing them for now
@@ -41,7 +41,7 @@ function loadCourses(courses){
 /**
  * Loads all requirements from database
  * @param {Array<Object>} requirements - Imported requirements
- * @returns {Array<Requirement>} Array of Requirement objects
+ * @returns {Array<Requirement>}
  */
 function loadRequirements(requirements){
   // Here we would load the courses from database, just importing them for now
@@ -144,10 +144,9 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
         });
     });
 
+    console.log(reqToCourses)
+    //make a list of all requirements
 
-    //make a list of all requirements (no like the object that has criteria, and programs)
-
-    
     Array.from(requirementMap.keys()).forEach((reqName) => {
 
       const requirement = requirementMap.get(reqName)
@@ -164,7 +163,6 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
         }
       }
     })
-    //Now remove reqs from that list as we add courses to another should be the general idea yea
 
     // Step 2: Add core courses first (courses we are guaranteed to need)
     const selectedCourses = new Set();
