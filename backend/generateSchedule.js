@@ -54,6 +54,35 @@ function loadRequirements(requirements){
   return allRequirements
 }
 
+function requirementToString(requirement) {
+  const { name, program, logic, allowsOverlap, criteria } = requirement;
+
+  // Format criteria
+  const formattedCriteria = criteria
+    .map((criterion, index) => {
+      const courses = criterion.courses ? criterion.courses.join(", ") : "None";
+      return `      ${index + 1}. ID: ${criterion.id}, Courses: [${courses}]`;
+    })
+    .join("\n");
+
+  // Format the entire requirement
+  return `
+Requirement:
+  Name: ${name}
+  Program: ${program}
+  Logic: ${logic}
+  Allows Overlap: ${allowsOverlap ? "Yes" : "No"}
+  Criteria:
+${formattedCriteria || "      None"}
+`;
+}
+
+
+function printRequirements(requirements) {
+  console.log(
+    requirements.map(req => requirementToString(req)).join("\n======================================\n")
+  );
+}
 /** 
  * Given a list of programs and courses, this function returns the optimal courses to take.
  * Optimal here is currently defined as the minimal number of courses to take to satisfy all requirements.
@@ -133,7 +162,6 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
         });
     });
 
-    console.log(reqToCourses)
     //make a list of all requirements
 
     Array.from(requirementMap.keys()).forEach((reqName) => {
@@ -164,31 +192,34 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
     // Step 2a: eliminate requirements knocked out by the core courses.
 
     coreCourses.forEach((course) => {
+
       const programs = []
       selectedCourses.add(course)
-      for(const req of remainingReqs){
 
-        //check if course can still be used to satisfy that requirement (i.e. not already used for the major)
-        if(!programs.includes(req.program) || req.allowsOverlap ){
-          //check if the course satisfies the req
+      for (let reqIndex = remainingReqs.length - 1; reqIndex >= 0; reqIndex--) {
+        const req = remainingReqs[reqIndex];
+      
+        // Check if the course can still be used to satisfy that requirement (i.e., not already used for the major )
+        //will need to update later to prevent triple counting and handle minors
+        if (!programs.includes(req.program) || req.allowsOverlap) {
 
-            req.criteria.forEach((criterion) => {
-              console.log(criterion.courses)
-              if(reqToCourses.get(req.name)){ //After the ch
-
-                //check if the course can satisfy the criteria
-                if(reqToCourses.get(req.name).includes(course)){
-
-                  programs.push(req.program)
-                  //console.log(course + " is being used to satisfy " + req.name)
-                }
-                
-              }
-            })
+          // Iterate through criteria and remove satisfied criteria
+          for (let i = req.criteria.length - 1; i >= 0; i--) {
+            const criterion = req.criteria[i];
+            if (criterion.courses.includes(course)) {
+              console.log(course + " is being used to satisfy " + req.name + " criterion " + criterion.id);
+              req.criteria.splice(i, 1); // Remove the satisfied criterion
+            }
           }
-          
-        
+      
+          // If all criteria are satisfied, remove the requirement from remainingReqs
+          if (req.criteria.length === 0) {
+            console.log(req.name + " has no more criteria and is being removed.");
+            remainingReqs.splice(reqIndex, 1); // Remove the requirement
+          }
+        }
       }
+      
     })
     return remainingReqs
 
@@ -260,5 +291,5 @@ const allPrograms = loadPrograms([csPaths[0], mathPaths[1]])
 const allCourses = loadCourses([mathCourses, csCourses])
 const allRequirements = loadRequirements([mathPaths[0].allRequirements, csPaths[0].allRequirements])
 const minimalCourses = findMinimalCourses(allPrograms, allCourses, allRequirements)
-findMinimalCourses(allPrograms, allCourses, allRequirements)
 // console.log(minimalCourses)
+printRequirements(minimalCourses)
