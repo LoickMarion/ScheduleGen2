@@ -61,8 +61,8 @@ const csReqs = [
         logicType: 'Course-Based',
         allowsOverlap: false,
         criteria: [
-            { id: 1, courses: ['MATH441', 'MATH545', 'MATH551', 'MATH552', 'LINGUIST301', 'ECE547', 'ECE668']},
-            { id: 2, courses: ['CS300+']}
+            { id: 1, courses: ['MATH441', 'MATH545', 'MATH551', 'MATH552', 'LINGUIST301', 'ECE547', 'ECE668', 'CS300+']},
+            // This is your way v and thats mine ^
             //{ id: 2, department: 'CS', minLevel: 300}
         ]
     },

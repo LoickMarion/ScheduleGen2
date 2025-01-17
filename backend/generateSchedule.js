@@ -89,25 +89,30 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
                     });
 
                     requirementSet.add(reqName);
-                    reqDetails.criteria.forEach((entry) => {
+                    reqDetails.criteria.forEach((criterion) => {
 
-                    if (entry.courses) {
-                        const coursesForReq = reqToCourses.get(reqName) || [];
+                      const coursesForReq = reqToCourses.get(reqName) || [];
 
-                        entry.courses.forEach((course) => {
-                        const reqsSatisfied = courseToReqs.get(course) ? courseToReqs.get(course) : []
+                      criterion.courses.forEach((course) => {
+                      const reqsSatisfied = courseToReqs.get(course) ? courseToReqs.get(course) : []
+
                         if (!reqsSatisfied.includes(reqName)) {
                             reqsSatisfied.push(reqName)
                         }
+                        
                         courseToReqs.set(course, reqsSatisfied)
 
                         if(!coursesForReq.includes(course)){
+                          
+                          //expand all plus courses (eg CS300+) into their actual possibilities. Adds to coursesForReq and replaces in criterion course lists
                           if(course.charAt(course.length - 1) === '+'){
+                            criterion.courses = criterion.courses.filter((element) => element != course)
                             const courseParts = course.match(/[A-Za-z]+|\d+/g)
                             suitableCourses = getAllCourses(allCourses, courseParts[0], courseParts[1])
                             suitableCourses.forEach((suitableCourse => {
                               const combinedName = suitableCourse.level_suffix ? suitableCourse.department + suitableCourse.level + suitableCourse.level_suffix : suitableCourse.department + suitableCourse.level
                               coursesForReq.push(combinedName)
+                              criterion.courses.push(combinedName)
                             }))
                             
                           } else {
@@ -115,25 +120,9 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
                           }
                         }
 
-                        })
-                        reqToCourses.set(reqName, coursesForReq)
-                    }
-
-                    if (entry.minLevel) {
-                        const courses = getAllCourses(allCourses, entry.department, entry.minLevel)
-                        courses.forEach((course) => {
-                        const combinedName = course.level_suffix ? course.department + course.level + course.level_suffix : course.department + course.level
-
-                        const reqsSatisfied = courseToReqs.get(combinedName) ? courseToReqs.get(combinedName) : []
-                        if (!reqsSatisfied.includes(reqName)) {
-                            reqsSatisfied.push(reqName)
-                        }
-                        courseToReqs.set(combinedName, reqsSatisfied)
-                        })
-
-                        
-                    }
-
+                      })
+                      reqToCourses.set(reqName, coursesForReq)
+                    
                     })
                 }
             } 
@@ -178,14 +167,21 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
       const programs = []
       selectedCourses.add(course)
       for(const req of remainingReqs){
-        const allCriteria = []
+
         //check if course can still be used to satisfy that requirement (i.e. not already used for the major)
         if(!programs.includes(req.program) || req.allowsOverlap ){
           //check if the course satisfies the req
 
             req.criteria.forEach((criterion) => {
-              if(criterion.courses){
-                allCriteria.push(criterion.courses)
+              console.log(criterion.courses)
+              if(reqToCourses.get(req.name)){ //After the ch
+
+                //check if the course can satisfy the criteria
+                if(reqToCourses.get(req.name).includes(course)){
+
+                  programs.push(req.program)
+                  //console.log(course + " is being used to satisfy " + req.name)
+                }
                 
               }
             })
@@ -265,4 +261,4 @@ const allCourses = loadCourses([mathCourses, csCourses])
 const allRequirements = loadRequirements([mathPaths[0].allRequirements, csPaths[0].allRequirements])
 const minimalCourses = findMinimalCourses(allPrograms, allCourses, allRequirements)
 findMinimalCourses(allPrograms, allCourses, allRequirements)
-//console.log(minimalCourses)
+// console.log(minimalCourses)
