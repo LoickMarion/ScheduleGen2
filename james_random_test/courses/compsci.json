@@ -2,6 +2,7 @@
     {
         "department": "CICS",
         "code": "110",
+        "suffix": null,
         "fall": true,
         "spring": true,
         "credits": 4
@@ -9,13 +10,15 @@
     {
         "department": "CICS",
         "code": "160",
+        "suffix": null,
         "fall": true,
         "spring": true,
         "credits": 4
     },
     {
         "department": "CICS",
-        "code": "198C",
+        "code": "198",
+        "suffix": "C",
         "fall": true,
         "spring": true,
         "credits": 1
@@ -23,6 +26,7 @@
     {
         "department": "CICS",
         "code": "210",
+        "suffix": null,
         "fall": true,
         "spring": true,
         "credits": 4

@@ -27,7 +27,7 @@ function selectSubjectCourses(db, subject) {
         }
     )
 }
-
+selectSubjectCourses(db, 'CS')
 /**
  * 
  * Async function, returns array
