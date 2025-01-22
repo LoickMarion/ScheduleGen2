@@ -44,7 +44,7 @@ function loadRequirements(requirements){
   const allRequirements = []
   requirements.forEach((requirement) => {
     requirement.forEach((element) => {
-      allRequirements.push(new Requirement(element.name, element.logicType, element.allowsOverlap, element.criteria))
+      allRequirements.push(new Requirement(element.name, element.logicType, element.allowsOverlap, element.criteria, element.blacklist))
     })
   })
   return allRequirements

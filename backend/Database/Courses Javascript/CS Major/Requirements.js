@@ -16,8 +16,10 @@ const csReqs = [
             { id: 10, courses: ['MATH132']},
             { id: 11, courses: ['MATH233']},
             { id: 12, courses: ['MATH235']}
-        ]
+        ],
+        blacklist: [
         
+        ]
     },
     {
         name: 'CS Minor Core Classes',
@@ -27,8 +29,10 @@ const csReqs = [
             { id: 1, courses: ['CICS110']},
             { id: 2, courses: ['CICS160']},
             { id: 3, courses: ['CICS210']},
-        ]
+        ],
+        blacklist: [
         
+        ]
     },
     {
         name: 'CS JYW',
@@ -36,6 +40,9 @@ const csReqs = [
         allowsOverlap: false,
         criteria: [
             { id: 1, courses: ['CS305'] } 
+        ],
+        blacklist: [
+        
         ]
     },
     {
@@ -44,6 +51,9 @@ const csReqs = [
         allowsOverlap: true,
         criteria: [
             { id: 1, courses: ['CS320','CS326'] }
+        ],
+        blacklist: [
+        
         ]
     },
     {
@@ -52,9 +62,10 @@ const csReqs = [
         allowsOverlap: false,
         criteria: [
             { id: 1, courses: ['CS300+'] }
-            //{ id: 1, department: 'CS', minLevel: 300 }
+        ],
+        blacklist: [
+            'CS311'
         ]
-        
     },
     {
         name: 'CS300++',
@@ -62,8 +73,9 @@ const csReqs = [
         allowsOverlap: false,
         criteria: [
             { id: 1, courses: ['MATH441', 'MATH545', 'MATH551', 'MATH552', 'LINGUIST301', 'ECE547', 'ECE668', 'CS300+']},
-            // This is your way v and thats mine ^
-            //{ id: 2, department: 'CS', minLevel: 300}
+        ],
+        blacklist: [
+            'CS311'
         ]
     },
     {
@@ -72,7 +84,9 @@ const csReqs = [
         allowsOverlap: false,
         criteria: [
             { id: 1, courses: ['CS400+']}
-            //{id: 1, department: 'CS', minLevel: 400 }
+        ],
+        blacklist: [
+            'CS311'
         ]
     },
     {
@@ -81,7 +95,9 @@ const csReqs = [
         allowsOverlap: false,
         criteria: [
             { id: 1, courses: ['CS500+']}
-            //{id: 1, department: 'CS', minLevel: 500 }
+        ],
+        blacklist: [
+            'CS311'
         ]
     },
     {
@@ -93,27 +109,22 @@ const csReqs = [
             {id: 2, courses: ['CS230']},
             {id: 3, courses: ['CS240']},
             {id: 4, courses: ['CS250']}
-        ] 
+        ],
+        blacklist: [
+        
+        ]
     },
     {
+        // this one is incomplete, not sure how to deal with & courses within the or
         name: 'CSLabScience',
         logicType: 'Course-Based',
         allowsOverlap: false,
         criteria: [
-            {id: 1, courses: ['CICS256']},
-            {id: 2, courses: ['CHEM111']},
-            {id: 3, courses: ['CHEM112']},
-            {id: 4, courses: ['CHEM121']},
-            {id: 5, courses: ['CHEM122']},
-            {id: 6, courses: ['GEOL101']},
-            {id: 7, courses: ['GEOL103','GEOL131']},
-            {id: 8, courses: ['GEOL105','GEOL131']},
-            {id: 9, courses: ['PHYSICS151']},
-            {id: 10, courses: ['PHYSICS181']},
-            {id: 11, courses: ['PHYSICS152']},
-            {id: 12, courses: ['PHYSICS182']},
-
-        ] 
+            {id: 1, courses: ['CICS256', 'CHEM111', 'CHEM112', 'CHEM121', 'CHEM122', 'GEOL101', 'PHYSICS151', 'PHYSICS152', 'PHYSICS181', 'PHYSICS182']},
+        ],
+        blacklist: [
+        
+        ]
     }
 ];
 

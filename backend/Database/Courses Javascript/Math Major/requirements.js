@@ -9,6 +9,9 @@ const mathReqs = [
             {id: 3, courses: ['MATH132']},
             {id: 4, courses: ['MATH233']},
             {id: 5, courses: ['MATH235']}
+        ],
+        blacklist: [
+        
         ]
     },
     {
@@ -17,6 +20,9 @@ const mathReqs = [
         allowsOverlap: false,
         criteria: [
             {id: 1, courses: ['CS250', 'MATH300']}
+        ],
+        blacklist: [
+        
         ]
     },
     {
@@ -25,8 +31,10 @@ const mathReqs = [
         allowsOverlap: false,
         criteria: [
             {id: 1, courses: ['MATH370']}
-        ]
+        ],
+        blacklist: [
         
+        ]
     },
     {
         name: 'MATH IE',
@@ -34,6 +42,9 @@ const mathReqs = [
         allowsOverlap: true,
         criteria: [
             {id:1, courses: ['MATH455','MATH456','MATH475','STAT525']},
+        ],
+        blacklist: [
+        
         ]
     },
     {
@@ -42,7 +53,10 @@ const mathReqs = [
         allowsOverlap: false,
         criteria: [
             {id: 1, courses: ['MATH421','MATH522','MATH523H','MATH524','MATH532H','MATH534H','MATH548','MATH552']},
-        ]  
+        ],
+        blacklist: [
+        
+        ]
     },
     {
         name: 'Applied Math Core',
@@ -52,6 +66,9 @@ const mathReqs = [
             {id: 1, courses: ['MATH331']},
             {id: 2, courses: ['MATH545']},
             {id: 3, courses: ['MATH551']}
+        ],
+        blacklist: [
+        
         ]
     },
     {
@@ -60,16 +77,20 @@ const mathReqs = [
         allowsOverlap: false,
         criteria: [
             {id: 1, courses: ['MATH456','MATH532','MATH534','MATH552'] }
-        ]
+        ],
+        blacklist: [
         
+        ]
     },
     {
         name: 'MATH400+',
         logicType: 'Course-Based',
         allowsOverlap: false,
         criteria: [
-            {id: 1, courses: ['MATH331', 'STAT315'] },
-            {id: 2, courses: ['MATH400+']},
+            {id: 1, courses: ['MATH331', 'STAT315', 'MATH400+'] },
+        ],
+        blacklist: [
+        
         ]
     },
     {
@@ -78,6 +99,9 @@ const mathReqs = [
         allowsOverlap: false,
         criteria:  [
             {id: 1, courses: ['MATH400+']},
+        ],
+        blacklist: [
+        
         ]
     },
     {
@@ -86,8 +110,10 @@ const mathReqs = [
         allowsOverlap: false,
         criteria: [
                 {id: 1, 
-                courses: ['STAT315', 'CS311', 'CS383', 'CS445', 'CS501', 'CS513', 'CS514', 'CS532','CS575','CS589','PHYSICS421','PHYSICS422','PHYSICS423','PHYSICS424']},
-                {id: 2, courses: ['MATH400+']}
+                courses: ['STAT315', 'CS311', 'CS383', 'CS445', 'CS501', 'CS513', 'CS514', 'CS532','CS575','CS589','PHYSICS421','PHYSICS422','PHYSICS423','PHYSICS424', 'MATH400+']},
+        ],
+        blacklist: [
+        
         ]
     },
     {
@@ -96,8 +122,10 @@ const mathReqs = [
         allowsOverlap: false,
         criteria: [
             {id: 1, courses: ['CS300+']}
+        ],
+        blacklist: [
+            'CS311'
         ]
-        
     },
 
 ]

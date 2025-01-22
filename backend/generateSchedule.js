@@ -1,4 +1,4 @@
-const csPaths = require('./Database/Courses Javascript/CS Major/Requirements.js')
+const csPaths = require('./Database/Courses Javascript/CS Major/requirements.js')
 const csCourses = require('./Database/Courses Javascript/CS Major/courses.js')
 const mathPaths = require('./Database/Courses Javascript/Math Major/Requirements.js')
 const mathCourses = require('./Database/Courses Javascript/Math Major/courses.js')
@@ -35,7 +35,8 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
                     count: [req.numReq],
                     logic: reqDetails.logicType,
                     allowsOverlap: reqDetails.allowsOverlap,
-                    programs: [program.programName] 
+                    programs: [program.name],
+                    blacklist: reqDetails.blacklist 
                     });
 
                     requirementSet.add(reqName);
@@ -61,8 +62,16 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
                             suitableCourses = getAllCourses(allCourses, courseParts[0], courseParts[1])
                             suitableCourses.forEach((suitableCourse => {
                               const combinedName = suitableCourse.level_suffix ? suitableCourse.department + suitableCourse.level + suitableCourse.level_suffix : suitableCourse.department + suitableCourse.level
-                              coursesForReq.push(combinedName)
-                              criterion.courses.push(combinedName)
+                              if(!reqDetails.blacklist.includes(combinedName)){
+                                if(program.name === 'Applied Math Secondary Major'){
+                                  //TODO For some reason CS300+ isn't showing up here
+                                  console.log(`Blacklist for ${program.name}'s ${reqName}: ${reqDetails.blacklist}`)
+                                }
+                                coursesForReq.push(combinedName)
+                                criterion.courses.push(combinedName)
+                              } else {
+                                console.log(`CS311 is on the blacklist for ${program.name}'s ${reqName}: ${reqDetails.blacklist}`)
+                              }
                             }))
                             
                           } else {
@@ -77,7 +86,7 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
                 }
             } 
             else{
-                requirementMap.get(reqName).programs.push(program.programName)
+                requirementMap.get(reqName).programs.push(program.name)
                 requirementMap.get(reqName).count.push(req.numReq)
             }
         });
@@ -97,20 +106,27 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
           req.logic = requirement.logic;
           req.allowsOverlap = requirement.allowsOverlap;
           req.criteria = requirement.criteria;
+          req.blacklist = requirement.blacklist
           remainingReqs.push(req);
         }
       }
     })
 
-    // Step 2: Add core courses first (courses we are guaranteed to need)
+    // Add core courses first (courses we are guaranteed to need)
     const selectedCourses = new Set();
-    const satisfiedReqs = [];
 
     const coreCourses = Array.from(courseToReqs.keys()).filter((course) => {
       return courseToReqs.get(course).some((reqName) => reqName.includes('Core'));
     });
 
-    // Step 2a: eliminate requirements knocked out by the core courses.
+    // If there are any requirements with only 1 criterion of 1 course remaining (ie JYW)
+    remainingReqs.forEach((req) => {
+      criterion = req.criteria
+      if(criterion.length === 1 && criterion[0].courses.length === 1){
+        coreCourses.push(criterion[0].courses[0])
+      }
+    })
+    // eliminate requirements knocked out by the core courses.
 
     coreCourses.forEach((course) => {
 
@@ -127,9 +143,10 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
           // Iterate through criteria and remove satisfied criteria
           for (let i = req.criteria.length - 1; i >= 0; i--) {
             const criterion = req.criteria[i];
-            if (criterion.courses.includes(course)) {
+            if (criterion.courses.includes(course) && !req.blacklist.includes(course)) {
               console.log(course + " is being used to satisfy " + req.name + " criterion " + criterion.id);
               req.criteria.splice(i, 1); // Remove the satisfied criterion
+              //req.blacklist.push(course)
             }
           }
       
@@ -140,70 +157,16 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
           }
         }
       }
-      
     })
+    console.log(selectedCourses)
     return remainingReqs
 
-    // Remove satisfied requirements from the remaining list
-    Object.keys(requirementMap).forEach(reqName => {
-        if (!reqName.includes('Core')) {
-            remainingReqs[reqName] = true;  // Mark as unsatisfied
-        }
-    });
 
-        
-
-
-    // Step 4: Initialize DP arrays and prepare the states
-    const numRequirements = allRequirements.length;
-    const targetState = (1 << numRequirements) - 1;  // All requirements satisfied
-    const dp = new Array(1 << numRequirements).fill(Infinity);
-    dp[0] = 0;  // No requirements satisfied with zero courses
-
-    // Helper function to convert requirement names to bitmask index
-    const reqNameToIndex = (reqName) => allRequirements.indexOf(reqName);
-
-
-    // Step 8: Dynamic Programming for overlapping courses
-    // Optimize for courses that count towards multiple requirements
-    const courseCounts = {};  // Track how many times each course has been used
-
-    Object.keys(courseToReqs).forEach(course => {
-        const courseReqs = courseToReqs[course];
-        const newDp = [...dp];  // Copy the current dp array
-
-        courseReqs.forEach(({ reqName, program }) => {
-            const reqIdx = reqNameToIndex(reqName);
-            const newState = 1 << reqIdx;  // Mark this requirement as satisfied
-
-            // Try all previous states and update dp table
-            for (let state = 0; state < (1 << numRequirements); state++) {
-                const newStateMask = state | newState;
-                // Avoid double-counting courses
-                if ((courseCounts[course] || 0) < 2) {
-                    newDp[newStateMask] = Math.min(newDp[newStateMask], dp[state] + 1);
-                    courseCounts[course] = (courseCounts[course] || 0) + 1;
-                }
-            }
-        });
-
-        dp.splice(0, dp.length, ...newDp);  // Update dp array with new values
-    });
-
-    // Step 9: Find the minimum number of courses needed to satisfy all remaining requirements
-    const minCourses = dp[targetState];
-    if (minCourses === Infinity) {
-        throw new Error('Unable to satisfy all requirements.');
-    }
-
-    // Return the selected courses
-    return Array.from(selectedCourses);
 }
-
 
 const allPrograms = loadPrograms([csPaths[0], mathPaths[1]])
 const allCourses = loadCourses([mathCourses, csCourses])
 const allRequirements = loadRequirements([mathPaths[0].allRequirements, csPaths[0].allRequirements])
 const minimalCourses = findMinimalCourses(allPrograms, allCourses, allRequirements)
-// console.log(minimalCourses)
+//console.log(minimalCourses)
 printRequirements(minimalCourses)

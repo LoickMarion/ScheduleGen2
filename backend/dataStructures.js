@@ -23,12 +23,14 @@ class Requirement {
      * @param {string} logicType - The type of logic applied to the requirement (e.g., "Course-Based").
      * @param {boolean} allowsOverlap - Whether this requirement can overlap with others.
      * @param {Array<Object>} criteria - The criteria for fulfilling the requirement.
+     * @param {Array<string>} blacklist - Any blacklisted courses that you cannot take for the requirement (e.g, CS311 for CS300+).
      */
-    constructor(name, logicType, allowsOverlap, criteria) {
+    constructor(name, logicType, allowsOverlap, criteria, blacklist) {
         this.name = name;
         this.logicType = logicType;
         this.allowsOverlap = allowsOverlap;
         this.criteria = criteria;
+        this.blacklist = blacklist;
     }
 }
 
@@ -38,11 +40,11 @@ class Requirement {
 class Program {
     /**
      * Create a program.
-     * @param {string} programName - The name of the program (e.g., "CS Major").
+     * @param {string} name - The name of the program (e.g., "CS Major").
      * @param {Array<Object>} requirements - The specific requirements for this program
      */
-    constructor(programName = 'N/A', requirements = []) {
-        this.programName = programName;
+    constructor(name = 'N/A', requirements = []) {
+        this.name = name;
         this.requirements = requirements;
     }
 }
