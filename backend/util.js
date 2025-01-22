@@ -35,11 +35,11 @@ function loadCourses(courses){
 }
 
 /**
- * Loads all requirements from database
+ * Loads all requirements from database, and then updates non-specific courses (i.e CS300+)
  * @param {Array<Object>} requirements - Imported requirements
  * @returns {Array<Requirement>}
  */
-function loadRequirements(requirements){
+function loadRequirements(requirements, allCourses){
   // Here we would load the courses from database, just importing them for now
   const allRequirements = []
   requirements.forEach((requirement) => {
@@ -47,6 +47,29 @@ function loadRequirements(requirements){
       allRequirements.push(new Requirement(element.name, element.logicType, element.allowsOverlap, element.criteria, element.blacklist))
     })
   })
+  allRequirements.forEach((requirement) => {
+    requirement.criteria.forEach((criterion) => {
+      let updatedCourses = []
+      criterion.courses.forEach((course) => {
+        if (course.charAt(course.length - 1) === '+') {
+          const courseParts = course.match(/[A-Za-z]+|\d+/g)
+          const suitableCourses = getAllCourses(allCourses, courseParts[0], courseParts[1])
+          suitableCourses.forEach((suitableCourse) => {
+            const combinedName = suitableCourse.level_suffix
+              ? suitableCourse.department + suitableCourse.level + suitableCourse.level_suffix
+              : suitableCourse.department + suitableCourse.level
+            if (!requirement.blacklist.includes(combinedName)) {
+              updatedCourses.push(combinedName)
+            }
+          })
+        } else {
+          updatedCourses.push(course)
+        }
+      })
+      criterion.courses = updatedCourses
+    })
+  })
+  
   return allRequirements
 }
 

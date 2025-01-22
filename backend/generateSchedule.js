@@ -52,36 +52,11 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
                         }
                         
                         courseToReqs.set(course, reqsSatisfied)
-
                         if(!coursesForReq.includes(course)){
-                          
-                          //expand all plus courses (eg CS300+) into their actual possibilities. Adds to coursesForReq and replaces in criterion course lists
-                          if(course.charAt(course.length - 1) === '+'){
-                            criterion.courses = criterion.courses.filter((element) => element != course)
-                            const courseParts = course.match(/[A-Za-z]+|\d+/g)
-                            suitableCourses = getAllCourses(allCourses, courseParts[0], courseParts[1])
-                            suitableCourses.forEach((suitableCourse => {
-                              const combinedName = suitableCourse.level_suffix ? suitableCourse.department + suitableCourse.level + suitableCourse.level_suffix : suitableCourse.department + suitableCourse.level
-                              if(!reqDetails.blacklist.includes(combinedName)){
-                                if(program.name === 'Applied Math Secondary Major'){
-                                  //TODO For some reason CS300+ isn't showing up here
-                                  console.log(`Blacklist for ${program.name}'s ${reqName}: ${reqDetails.blacklist}`)
-                                }
-                                coursesForReq.push(combinedName)
-                                criterion.courses.push(combinedName)
-                              } else {
-                                console.log(`CS311 is on the blacklist for ${program.name}'s ${reqName}: ${reqDetails.blacklist}`)
-                              }
-                            }))
-                            
-                          } else {
-                            coursesForReq.push(course)
-                          }
+                          coursesForReq.push(course)
                         }
-
                       })
                       reqToCourses.set(reqName, coursesForReq)
-                    
                     })
                 }
             } 
@@ -91,7 +66,6 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
             }
         });
     });
-
     //make a list of all requirements
 
     Array.from(requirementMap.keys()).forEach((reqName) => {
@@ -111,7 +85,6 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
         }
       }
     })
-
     // Add core courses first (courses we are guaranteed to need)
     const selectedCourses = new Set();
 
@@ -159,14 +132,10 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
       }
     })
     console.log(selectedCourses)
-    return remainingReqs
-
-
+    printRequirements(remainingReqs)
 }
 
 const allPrograms = loadPrograms([csPaths[0], mathPaths[1]])
 const allCourses = loadCourses([mathCourses, csCourses])
-const allRequirements = loadRequirements([mathPaths[0].allRequirements, csPaths[0].allRequirements])
+const allRequirements = loadRequirements([mathPaths[0].allRequirements, csPaths[0].allRequirements], allCourses)
 const minimalCourses = findMinimalCourses(allPrograms, allCourses, allRequirements)
-//console.log(minimalCourses)
-printRequirements(minimalCourses)
