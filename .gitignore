@@ -1,3 +1,5 @@
 node_modules/
 package.json
 package-lock.json
+james_random_test/
+test.js

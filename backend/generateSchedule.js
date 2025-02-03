@@ -133,6 +133,21 @@ function findMinimalCourses(allPrograms, allCourses, allRequirements) {
     })
     console.log(selectedCourses)
     printRequirements(remainingReqs)
+
+
+    remainingReqs.forEach((remainingRequirement) => {
+      i = 0
+      courseToTake = remainingRequirement.criteria[0].courses[i]
+      while(true){
+        if(selectedCourses.has(courseToTake)){
+          courseToTake = remainingRequirement.criteria[0].courses[i]
+          i++
+        } else {
+          selectedCourses.add(courseToTake)
+          break
+        }
+      }
+    })
 }
 
 const allPrograms = loadPrograms([csPaths[0], mathPaths[1]])
